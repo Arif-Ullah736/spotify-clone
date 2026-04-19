@@ -1,0 +1,51 @@
+import { createContext, useRef } from "react";
+import { useState } from "react";
+import { songsData } from "../assets/assets/assets";
+
+export const PlayerContext = createContext();
+
+const PlayerContextProvider = (props) => {
+  const audioRef = useRef();
+  const seekBg = useRef();
+  const SeedBar = useRef();
+
+  const [track, setTrack] = useState(songsData[0]);
+  const [playStatus, setPlayStatus] = useState(false);
+  const [time, setTime] = useState({
+    currentTime: { seconds: 0, minutes: 0 },
+    totalTime: { seconds: 0, minutes: 0 },
+  });
+
+  //   funnction for playing and  audio
+  const play = () => {
+    audioRef.current.play();
+    setPlayStatus(true);
+  };
+
+  //   function for pausing the audio
+  const pause = () => {
+    audioRef.current.pause();
+    setPlayStatus(false);
+  };
+
+  const contextValue = {
+    audioRef,
+    seekBg,
+    SeedBar,
+    track,
+    setTrack,
+    playStatus,
+    setPlayStatus,
+    time,
+    setTime,
+    play,
+    pause,
+  };
+
+  return (
+    <PlayerContext.Provider value={contextValue}>
+      {props.children}
+    </PlayerContext.Provider>
+  );
+};
+export default PlayerContextProvider;
